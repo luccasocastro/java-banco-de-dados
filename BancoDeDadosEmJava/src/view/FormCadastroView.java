@@ -1,21 +1,28 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import dao.Conexao;
 
 public class FormCadastroView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField uId;
 	private JTextField uNome;
-	private JTextField uSenha;
+	private JPasswordField uSenha;
 
 	/**
 	 * Launch the application.
@@ -66,12 +73,29 @@ public class FormCadastroView extends JFrame {
 		lblNewLabel_2.setBounds(135, 163, 84, 14);
 		contentPane.add(lblNewLabel_2);
 		
-		uSenha = new JTextField();
-		uSenha.setBounds(133, 184, 174, 20);
+		uSenha = new JPasswordField();
+		uSenha.setBounds(135, 184, 172, 20);
 		contentPane.add(uSenha);
-		uSenha.setColumns(10);
 		
 		JButton btnSalvar = new JButton("Salvar");
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Connection conexao = new Conexao().getConnection();
+					
+					String sql = "insert into usuario(usuario,senha) values('Luccas Castro','12345');"; 
+					
+					PreparedStatement statement = conexao.prepareStatement(sql);
+					statement.execute();
+					
+					conexao.close();
+							
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnSalvar.setBounds(133, 215, 174, 23);
 		contentPane.add(btnSalvar);
 	}
