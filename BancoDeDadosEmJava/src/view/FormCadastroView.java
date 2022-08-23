@@ -4,7 +4,6 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -16,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import dao.Conexao;
+import dao.UsuarioDAO;
+import model.Usuario;
 
 public class FormCadastroView extends JFrame {
 
@@ -80,20 +81,17 @@ public class FormCadastroView extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Usuario usuario = new Usuario("xandao","12345");
+				
 				try {
 					Connection conexao = new Conexao().getConnection();
-					
-					String sql = "insert into usuario(usuario,senha) values('Luccas Castro','12345');"; 
-					
-					PreparedStatement statement = conexao.prepareStatement(sql);
-					statement.execute();
-					
-					conexao.close();
-							
+					UsuarioDAO usuarioDAO = new UsuarioDAO(conexao);
+					usuarioDAO.insert(usuario);
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				
 			}
 		});
 		btnSalvar.setBounds(133, 215, 174, 23);
