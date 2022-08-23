@@ -9,11 +9,13 @@ import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controller.FormCadastroController;
 import dao.Conexao;
 import dao.UsuarioDAO;
 import model.Usuario;
@@ -24,6 +26,7 @@ public class FormCadastroView extends JFrame {
 	private JTextField uId;
 	private JTextField uNome;
 	private JPasswordField uSenha;
+	private final FormCadastroController controller;
 
 	/**
 	 * Launch the application.
@@ -40,11 +43,40 @@ public class FormCadastroView extends JFrame {
 			}
 		});
 	}
+	
+	public JTextField getuId() {
+		return uId;
+	}
+
+	public void setuId(JTextField uId) {
+		this.uId = uId;
+	}
+
+	public JTextField getuNome() {
+		return uNome;
+	}
+
+	public void setuNome(JTextField uNome) {
+		this.uNome = uNome;
+	}
+
+	public JPasswordField getuSenha() {
+		return uSenha;
+	}
+
+	public void setuSenha(JPasswordField uSenha) {
+		this.uSenha = uSenha;
+	}
+
+
 
 	/**
 	 * Create the frame.
 	 */
 	public FormCadastroView() {
+		
+		controller = new FormCadastroController(this);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -61,7 +93,7 @@ public class FormCadastroView extends JFrame {
 		contentPane.add(uId);
 		uId.setColumns(10);
 		
-		JLabel lblNewLabel_1 = new JLabel("Usuário:");
+		JLabel lblNewLabel_1 = new JLabel("Usuário:"); 
 		lblNewLabel_1.setBounds(135, 107, 84, 14);
 		contentPane.add(lblNewLabel_1);
 		
@@ -81,17 +113,7 @@ public class FormCadastroView extends JFrame {
 		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario usuario = new Usuario("xandao","12345");
-				
-				try {
-					Connection conexao = new Conexao().getConnection();
-					UsuarioDAO usuarioDAO = new UsuarioDAO(conexao);
-					usuarioDAO.insert(usuario);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				controller.salvaUsuario();
 			}
 		});
 		btnSalvar.setBounds(133, 215, 174, 23);
